@@ -33,6 +33,7 @@ public class GreeterImpl extends GreeterGrpc.GreeterImplBase implements Consensu
             entry.getObserver().onNext(reply);
             entry.getObserver().onCompleted();
         });
+        registry.clear();
 
     }
 
