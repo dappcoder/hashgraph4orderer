@@ -1,5 +1,8 @@
+import com.dappcoder.grpc.server.GrpcServer;
 import com.swirlds.platform.*;
 import com.txmq.exo.core.ExoPlatformLocator;
+
+import java.io.IOException;
 
 public class HashgraphSocketMain implements SwirldMain {
 
@@ -11,10 +14,15 @@ public class HashgraphSocketMain implements SwirldMain {
         long selfId = platform.getAddress().getId();
 
         int port = platform.getState().getAddressBookCopy().getAddress(selfId).getPortExternalIpv4() + 1000;
-        ExoPlatformLocator.initSocketMessaging(
-                port,
-                new String[] {"com.txmq.socketdemo.socket"}
-        );
+
+        final GrpcServer server = new GrpcServer();
+        try {
+            server.start(port);
+            server.blockUntilShutdown();
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException("Could not start GRPC Server", e);
+        }
+
     }
 
     @Override
