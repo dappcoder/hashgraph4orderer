@@ -1,6 +1,8 @@
+import com.dappcoder.grpc.server.ConsensusHandler;
 import com.swirlds.platform.*;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,8 +14,14 @@ public class HashgraphSocketState implements SwirldState {
 
     private AddressBook addressBook;
 
+    private List<ConsensusHandler> consensusHandlers = new ArrayList<>();
+
     public synchronized List<String> getStrings() {
         return strings;
+    }
+
+    public synchronized void addConsensusHandler(ConsensusHandler handler) {
+        this.consensusHandlers.add(handler);
     }
 
     @Override
@@ -28,12 +36,20 @@ public class HashgraphSocketState implements SwirldState {
 
     @Override
     public synchronized void copyFrom(SwirldState old) {
-        addressBook = ((HashgraphSocketState) old).addressBook.copy();
+        HashgraphSocketState oldHSState = (HashgraphSocketState) old;
+        strings = new ArrayList<>(oldHSState.strings);
+        addressBook = oldHSState.addressBook.copy();
+        consensusHandlers = new ArrayList<>(oldHSState.consensusHandlers);
     }
 
     @Override
-    public synchronized void handleTransaction(long l, boolean b, Instant instant, byte[] bytes, Address address) {
-
+    public synchronized void handleTransaction(long id, boolean consensus,
+                                               Instant timestamp, byte[] transaction, Address address) {
+        if (consensus) {
+            String message = new String(transaction, StandardCharsets.UTF_8);
+            strings.add(message);
+            consensusHandlers.forEach(handler -> handler.handle(message));
+        }
     }
 
     @Override
