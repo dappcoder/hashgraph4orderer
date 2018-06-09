@@ -1,5 +1,9 @@
 package com.dappcoder.grpc.server;
 
+import com.swirlds.platform.Address;
+
+import java.time.Instant;
+
 public interface ConsensusHandler {
-    void handle(String consensus);
+    void handle(long id, boolean consensus, Instant timestamp, byte[] transaction, Address address);
 }

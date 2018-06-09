@@ -3,8 +3,10 @@ package com.dappcoder.grpc.server;
 import com.dappcoder.proto.helloworld.GreeterGrpc;
 import com.dappcoder.proto.helloworld.HelloReply;
 import com.dappcoder.proto.helloworld.HelloRequest;
+import com.swirlds.platform.Address;
 import io.grpc.stub.StreamObserver;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,8 +26,9 @@ public class GreeterImpl extends GreeterGrpc.GreeterImplBase implements Consensu
         registry.add(new RegistryEntry(responseObserver, req));
     }
 
+
     @Override
-    public void handle(String consensus) {
+    public void handle(long id, boolean consensus, Instant timestamp, byte[] transaction, Address address) {
         System.out.println("todo: BUILDING REPLY WITH CONSENSUS");
 
         registry.forEach(entry -> {

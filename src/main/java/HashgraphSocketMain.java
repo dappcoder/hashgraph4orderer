@@ -3,6 +3,8 @@ import com.dappcoder.grpc.server.GrpcServer;
 import com.swirlds.platform.*;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.time.Instant;
 
 public class HashgraphSocketMain implements SwirldMain, ConsensusHandler {
 
@@ -25,8 +27,6 @@ public class HashgraphSocketMain implements SwirldMain, ConsensusHandler {
 
     @Override
     public void run() {
-        System.out.println("RUN");
-
         long selfId = platform.getAddress().getId();
 
         int port = platform.getState().getAddressBookCopy().getAddress(selfId).getPortExternalIpv4() + 1000;
@@ -62,9 +62,13 @@ public class HashgraphSocketMain implements SwirldMain, ConsensusHandler {
     }
 
     @Override
-    public void handle(String message) {
+    public void handle(long id, boolean consensus, Instant timestamp, byte[] transaction, Address address) {
         if (console != null) {
-            console.out.println("CONSENSUS: \n" + message);
+            try {
+                console.out.println("CONSENSUS: \n" + new String(transaction, "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException(e);
+            }
         }
 
     }

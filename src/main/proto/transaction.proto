@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.dappcoder.proto.hashgraph";
+
+package hashgraph;
+
+message Transaction {
+    // Marshaled Payload
+    bytes payload = 1;
+}
+
+message CreateResponse {
+    bool accepted = 1;
+}
+
+message GossipedTransaction {
+    int64 id = 1;
+    bool consensus = 2;
+    int64 timestamp = 3;
+    bytes transaction = 4;
+    int64 addressId = 5;
+}
+
+message HandleResponse {
+
+}
+
+service TransactionFeed {
+
+    rpc Create(Transaction) returns (CreateResponse) {}
+
+    rpc Handle(GossipedTransaction) returns (HandleResponse) {}
+}
+

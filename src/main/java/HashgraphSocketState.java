@@ -48,7 +48,7 @@ public class HashgraphSocketState implements SwirldState {
         if (consensus) {
             String message = new String(transaction, StandardCharsets.UTF_8);
             strings.add(message);
-            consensusHandlers.forEach(handler -> handler.handle(message));
+            consensusHandlers.forEach(handler -> handler.handle(id, consensus, timestamp, transaction, address));
         }
     }
 

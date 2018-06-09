@@ -30,13 +30,13 @@ public class GrpcServer {
 
     private Server server;
 
-    private GreeterImpl service;
+    private TransactionFeedImpl service;
 
     public GrpcServer() {
-        service = new GreeterImpl();
+        service = new TransactionFeedImpl();
     }
 
-    public GreeterImpl getService() {
+    public TransactionFeedImpl getService() {
         return service;
     }
 
