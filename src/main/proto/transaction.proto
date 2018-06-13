@@ -1,9 +1,14 @@
+/*
+SPDX-License-Identifier: Apache-2.0
+*/
+
 syntax = "proto3";
 
-option java_multiple_files = true;
-option java_package = "com.dappcoder.proto.hashgraph";
+option go_package = "github.com/hyperledger/fabric/protos/orderer";
+option java_package = "org.hyperledger.fabric.protos.orderer";
 
-package hashgraph;
+package orderer;
+
 
 message Transaction {
     // Marshaled Payload

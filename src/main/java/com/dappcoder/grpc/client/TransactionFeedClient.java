@@ -16,13 +16,12 @@
 
 package com.dappcoder.grpc.client;
 
-import com.dappcoder.proto.hashgraph.CreateResponse;
-import com.dappcoder.proto.hashgraph.Transaction;
-import com.dappcoder.proto.hashgraph.TransactionFeedGrpc;
 import com.google.protobuf.ByteString;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
+import org.hyperledger.fabric.protos.orderer.TransactionFeedGrpc;
+import org.hyperledger.fabric.protos.orderer.TransactionOuterClass;
 
 import java.io.UnsupportedEncodingException;
 import java.util.concurrent.TimeUnit;
@@ -59,9 +58,9 @@ public class TransactionFeedClient {
   public void sendTransaction(String data) {
     logger.info("Will try to send transaction " + data + " ...");
 
-    CreateResponse response;
+    TransactionOuterClass.CreateResponse response;
     try {
-      Transaction transaction = Transaction.newBuilder().setPayload(ByteString.copyFrom(data, "UTF-8")).build();
+      TransactionOuterClass.Transaction transaction = TransactionOuterClass.Transaction.newBuilder().setPayload(ByteString.copyFrom(data, "UTF-8")).build();
       response = blockingStub.create(transaction);
       logger.info("Transaction accepted: " + response.getAccepted());
     } catch (StatusRuntimeException e) {
