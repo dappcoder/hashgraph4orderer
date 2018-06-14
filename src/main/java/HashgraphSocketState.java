@@ -1,3 +1,4 @@
+import com.dappcoder.grpc.client.OrdererClient;
 import com.dappcoder.grpc.server.ConsensusHandler;
 import com.swirlds.platform.*;
 
@@ -27,6 +28,11 @@ public class HashgraphSocketState implements SwirldState {
     @Override
     public synchronized void init(Platform platform, AddressBook addressBook) {
         this.addressBook = addressBook;
+
+        int consensusPort = platform.getAddress().getPortExternalIpv4();
+        int ordererPort = consensusPort + 2000;
+        OrdererClient ordererClient = new OrdererClient("127.0.0.1", ordererPort);
+        addConsensusHandler(ordererClient);
     }
 
     @Override
@@ -77,11 +83,6 @@ public class HashgraphSocketState implements SwirldState {
 
     @Override
     public synchronized void copyFrom(FCDataInputStream inStream) throws IOException {
-        try {
-            strings = new ArrayList<String>(
-                    Arrays.asList(Utilities.readStringArray(inStream)));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        strings = Arrays.asList(Utilities.readStringArray(inStream));
     }
 }

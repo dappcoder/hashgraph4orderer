@@ -8,40 +8,41 @@ import java.time.Instant;
 
 public class HashgraphSocketMain implements SwirldMain, ConsensusHandler {
 
-    private GrpcServer server;
 
     private Platform platform;
 
     private Console console;
 
-    public HashgraphSocketMain() {
-        server = new GrpcServer();
-    }
+    private GrpcServer server;
+
 
     @Override
     public void init(Platform platform, long l) {
         this.platform = platform;
         this.console = platform.createConsole(true);
+
+        int consensusPort = platform.getAddress().getPortExternalIpv4();
+        int grpcPort = consensusPort + 1000;
+        server = new GrpcServer(grpcPort);
+
         console.out.println("Initialized " + platform.getAddress().getSelfName());
     }
 
     @Override
     public void run() {
-        long selfId = platform.getAddress().getId();
-
-        int port = platform.getState().getAddressBookCopy().getAddress(selfId).getPortExternalIpv4() + 1000;
-
-        server.getService().addMessageHandler(this::sendAsTransaction);
         try {
-            server.start(port);
+            server.start();
+            server.getService().addMessageHandler(this::sendAsTransaction);
+            HashgraphSocketState state = (HashgraphSocketState) platform.getState();
+            state.addConsensusHandler(this);
             server.blockUntilShutdown();
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException("Could not start GRPC Server", e);
         }
     }
 
-    private boolean sendAsTransaction(String message) {
-        return this.platform.createTransaction(message.getBytes());
+    private boolean sendAsTransaction(byte[] message) {
+        return this.platform.createTransaction(message);
     }
 
     @Override
@@ -52,7 +53,6 @@ public class HashgraphSocketMain implements SwirldMain, ConsensusHandler {
     @Override
     public SwirldState newState() {
         HashgraphSocketState state = new HashgraphSocketState();
-        state.addConsensusHandler(server.getService());
         state.addConsensusHandler(this);
         return state;
     }
