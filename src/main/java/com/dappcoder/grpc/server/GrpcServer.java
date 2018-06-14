@@ -28,9 +28,9 @@ public class GrpcServer {
                 .build()
                 .start();
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            System.err.println("*** shutting down gRPC server since JVM is shutting down");
+            System.err.println("*** shutting down gRPC server since JVM is shutting down. port: " + port);
             GrpcServer.this.stop();
-            System.err.println("*** server shut down");
+            System.err.println("*** server shut down. port: " + port);
         }));
     }
 

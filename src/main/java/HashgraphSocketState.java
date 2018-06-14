@@ -77,7 +77,7 @@ public class HashgraphSocketState implements SwirldState {
             Utilities.writeStringArray(outStream,
                     strings.toArray(new String[0]));
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
     }
