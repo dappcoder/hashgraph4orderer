@@ -31,7 +31,8 @@ public class HashgraphSocketState implements SwirldState {
 
         int consensusPort = platform.getAddress().getPortExternalIpv4();
         int ordererPort = consensusPort + 2000;
-        OrdererClient ordererClient = new OrdererClient("127.0.0.1", ordererPort);
+        String ordererHost = "127.0.0.1"; // TODO extract to config
+        OrdererClient ordererClient = new OrdererClient(ordererHost, ordererPort);
         addConsensusHandler(ordererClient);
     }
 
