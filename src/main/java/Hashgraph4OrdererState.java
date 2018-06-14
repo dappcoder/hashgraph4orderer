@@ -1,6 +1,8 @@
 import com.dappcoder.grpc.client.OrdererClient;
 import com.dappcoder.grpc.server.ConsensusHandler;
 import com.swirlds.platform.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -10,6 +12,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Hashgraph4OrdererState implements SwirldState {
+
+    private static final Logger LOG = LogManager.getLogger("Hashgraph4Orderer");
 
     private List<String> strings = new ArrayList<String>();
 
@@ -77,6 +81,7 @@ public class Hashgraph4OrdererState implements SwirldState {
             Utilities.writeStringArray(outStream,
                     strings.toArray(new String[0]));
         } catch (IOException e) {
+            LOG.warn(e);
             throw new RuntimeException(e);
         }
 

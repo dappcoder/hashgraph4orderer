@@ -6,6 +6,8 @@ import com.swirlds.platform.Address;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hyperledger.fabric.protos.orderer.OrdererConsensus;
 import org.hyperledger.fabric.protos.orderer.OrdererServiceGrpc;
 
@@ -13,6 +15,8 @@ import java.time.Instant;
 import java.util.concurrent.TimeUnit;
 
 public class OrdererClient implements ConsensusHandler {
+
+    private static final Logger LOG = LogManager.getLogger("Hashgraph4Orderer");
 
     private final ManagedChannel channel;
 
@@ -53,6 +57,7 @@ public class OrdererClient implements ConsensusHandler {
                     .build();
             blockingStub.consensus(gossiped);
         } catch (StatusRuntimeException e) {
+            LOG.warn(e);
             throw new RuntimeException("RPC failed: {0}", e);
         }
     }

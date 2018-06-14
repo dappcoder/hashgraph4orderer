@@ -1,6 +1,8 @@
 import com.dappcoder.grpc.server.ConsensusHandler;
 import com.dappcoder.grpc.server.GrpcServer;
 import com.swirlds.platform.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -8,6 +10,7 @@ import java.time.Instant;
 
 public class Hashgraph4OrdererMain implements SwirldMain, ConsensusHandler {
 
+    private static final Logger LOG = LogManager.getLogger("Hashgraph4Orderer");
 
     private Platform platform;
 
@@ -37,6 +40,7 @@ public class Hashgraph4OrdererMain implements SwirldMain, ConsensusHandler {
             state.addConsensusHandler(this);
             server.blockUntilShutdown();
         } catch (IOException | InterruptedException e) {
+            LOG.warn(e);
             throw new RuntimeException("Could not start GRPC Server", e);
         }
     }
@@ -67,6 +71,7 @@ public class Hashgraph4OrdererMain implements SwirldMain, ConsensusHandler {
             try {
                 console.out.println("CONSENSUS: \n" + new String(transaction, "UTF-8"));
             } catch (UnsupportedEncodingException e) {
+                LOG.warn(e);
                 throw new RuntimeException(e);
             }
         }

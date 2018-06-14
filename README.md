@@ -2,6 +2,8 @@
 
 This is one of the pieces that enables running Hyperledger Fabric (HLF) chaincode on Hashgraph consensus. More exactly, it is a Hashgraph Application that has the sole purpose to accept Fabric transactions, run them through Hashgraph consensus and send the consented (and ordered) transactions back to Fabric.
 
+To setup HLF Orderer, see the [Hashgraph Consensus README.md](https://github.com/dappcoder/fabric/tree/hashgraph-orderer-plugin/orderer/consensus/hashgraph)
+
 The communication with the HLF Orderer Server takes place via gRPC and protobuf. This app exposes one gRPC endpoint through which transactions are sent by the Orderer. After the transactions reach hashgraph consensus, they are sent back to the Orderer through gRPC again. This time the Orderer plays the server role accepting transactions.
 
 
