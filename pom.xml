@@ -3,12 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.dappcoder</groupId>
-    <artifactId>hashgraph-socket</artifactId>
+    <artifactId>hashgraph4orderer</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <sdk.dir>/home/alex/Repositories/swirlds/sdk</sdk.dir>
-        <app.name>HashgraphSocket</app.name>
+        <sdk.dir>/usr/local/swirlds/sdk</sdk.dir>
+        <app.name>Hashgraph4Orderer</app.name>
 
         <app.repo>${sdk.dir}/data/repos/app/</app.repo>
         <platform.repo>${sdk.dir}/data/repos/platform/</platform.repo>

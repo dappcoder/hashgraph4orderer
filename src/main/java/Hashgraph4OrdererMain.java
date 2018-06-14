@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.time.Instant;
 
-public class HashgraphSocketMain implements SwirldMain, ConsensusHandler {
+public class Hashgraph4OrdererMain implements SwirldMain, ConsensusHandler {
 
 
     private Platform platform;
@@ -33,7 +33,7 @@ public class HashgraphSocketMain implements SwirldMain, ConsensusHandler {
         try {
             server.start();
             server.getService().addMessageHandler(this::sendAsTransaction);
-            HashgraphSocketState state = (HashgraphSocketState) platform.getState();
+            Hashgraph4OrdererState state = (Hashgraph4OrdererState) platform.getState();
             state.addConsensusHandler(this);
             server.blockUntilShutdown();
         } catch (IOException | InterruptedException e) {
@@ -52,7 +52,7 @@ public class HashgraphSocketMain implements SwirldMain, ConsensusHandler {
 
     @Override
     public SwirldState newState() {
-        HashgraphSocketState state = new HashgraphSocketState();
+        Hashgraph4OrdererState state = new Hashgraph4OrdererState();
         state.addConsensusHandler(this);
         return state;
     }

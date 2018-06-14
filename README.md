@@ -1,40 +1,53 @@
-Generated with swirlds-hashgraph-archetype.
+### Hashgraph Consensus for Hyperledger Fabric Orderer Server
 
-1. Hashgraph SDK
-Make sure Hashgraph SDK is installed in /home/alex/Repositories/swirlds/sdk as described in https://dev.hashgraph.com/docs/installation/
+This is one of the pieces that enables running Hyperledger Fabric (HLF) chaincode on Hashgraph consensus. More exactly, it is a Hashgraph Application that has the sole purpose to accept Fabric transactions, run them through Hashgraph consensus and send the consented (and ordered) transactions back to Fabric.
 
-2. Configure the SDK
+The communication with the HLF Orderer Server takes place via gRPC and protobuf. This app exposes one gRPC endpoint through which transactions are sent by the Orderer. After the transactions reach hashgraph consensus, they are sent back to the Orderer through gRPC again. This time the Orderer plays the server role accepting transactions.
+
+
+##### 1. Hashgraph SDK
+   * Change `sdk.dir` property in the pom.xml to point to the location where Hashgraph SDK is installed (default `/usr/local/swirlds/sdk`).
+   * To install Swirlds Hashgraph SDK, follow the steps on project's official web page https://dev.hashgraph.com/docs/installation/
+
+##### 2. Configure the SDK
+
 Change the config.txt file found in the SDK as follows
-   * comment the GameDemo.jar line and add a new app line for this application (HashgraphSocket)
+   * comment all `app` lines and add a new one for this application (Hashgraph4Orderer)
 ```
 ...
 # app,		GameDemo.jar,		   9000, 9000
-app,        HashgraphSocket.jar
+app,        Hashgraph4Orderer.jar
 ...
 ```
    * For now, switch off the TLS encryption for a faster startup. You can come back and revert this change later. Just uncomment the line:
 ```
 TLS, off
 ```
+   * Raise transaction limit to 1MB
+```
+transactionMaxBytes, 1048576
+```
 
-3. Build it
+##### 3. Build it
 ```
 mvn clean install
 ```
 This will package the app jar and copy it to the 'data/apps' dir inside the Hashgraph sdk.
 
-4. Run from IntelliJ IDEA
+##### 4. Run it
+From IntelliJ IDEA:
    * Run -> Edit Configurations...
    * Add new Application cofiguration
-   * Main Class: HashgraphSocketMain
+   * Main Class: Hashgraph4OrdererMain
    * Working Directory: /home/alex/Repositories/swirlds/sdk
    * Press "Run..." or "Debug..."
 
-You should see four console windows and one main browser window.
-
-Or to run from command line in the usual way, go to hashgraph sdk dir
+From command line:
+Go to hashgraph sdk dir and run:
 ```
 java -jar swirlds.jar
 ```
+
+You should see four console windows and one main browser window.
 
 NOTE: Every code change needs a 'mvn clean install' before you run the app again

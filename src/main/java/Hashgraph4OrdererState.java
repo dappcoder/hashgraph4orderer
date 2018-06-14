@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class HashgraphSocketState implements SwirldState {
+public class Hashgraph4OrdererState implements SwirldState {
 
     private List<String> strings = new ArrayList<String>();
 
@@ -43,7 +43,7 @@ public class HashgraphSocketState implements SwirldState {
 
     @Override
     public synchronized void copyFrom(SwirldState old) {
-        HashgraphSocketState oldHSState = (HashgraphSocketState) old;
+        Hashgraph4OrdererState oldHSState = (Hashgraph4OrdererState) old;
         strings = new ArrayList<>(oldHSState.strings);
         addressBook = oldHSState.addressBook.copy();
         consensusHandlers = new ArrayList<>(oldHSState.consensusHandlers);
@@ -66,7 +66,7 @@ public class HashgraphSocketState implements SwirldState {
 
     @Override
     public synchronized FastCopyable copy() {
-        HashgraphSocketState copy = new HashgraphSocketState();
+        Hashgraph4OrdererState copy = new Hashgraph4OrdererState();
         copy.copyFrom(this);
         return copy;
     }
