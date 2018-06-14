@@ -10,16 +10,7 @@ option java_package = "org.hyperledger.fabric.protos.orderer";
 package orderer;
 
 
-message Transaction {
-    // Marshaled Payload
-    bytes payload = 1;
-}
-
-message CreateResponse {
-    bool accepted = 1;
-}
-
-message GossipedTransaction {
+message ConsensusTransaction {
     int64 id = 1;
     bool consensus = 2;
     int64 timestamp = 3;
@@ -27,14 +18,11 @@ message GossipedTransaction {
     int64 addressId = 5;
 }
 
-message HandleResponse {
-
+message ConsensusResponse {
+    bool accepted = 1;
 }
 
-service TransactionFeed {
-
-    rpc Create(Transaction) returns (CreateResponse) {}
-
-    rpc Handle(GossipedTransaction) returns (HandleResponse) {}
+service OrdererFeed {
+    rpc Consensus(ConsensusTransaction) returns (ConsensusResponse) {}
 }
 

@@ -1,6 +1,6 @@
 package com.dappcoder.grpc.server;
 
-public interface MessageHandler {
+public interface HashgraphFeedHandler {
 
     boolean handle(byte[] message);
 

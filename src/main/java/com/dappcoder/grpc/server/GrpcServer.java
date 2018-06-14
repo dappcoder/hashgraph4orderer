@@ -9,16 +9,16 @@ public class GrpcServer {
 
     private Server server;
 
-    private TransactionFeedImpl service;
+    private HashgraphFeedImpl service;
 
     private int port;
 
     public GrpcServer(int port) {
         this.port = port;
-        this.service = new TransactionFeedImpl();
+        this.service = new HashgraphFeedImpl();
     }
 
-    public TransactionFeedImpl getService() {
+    public HashgraphFeedImpl getService() {
         return service;
     }
 
