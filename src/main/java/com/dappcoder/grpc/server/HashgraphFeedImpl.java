@@ -2,12 +2,12 @@ package com.dappcoder.grpc.server;
 
 import io.grpc.stub.StreamObserver;
 import org.hyperledger.fabric.protos.orderer.Hashgraph;
-import org.hyperledger.fabric.protos.orderer.HashgraphFeedGrpc;
+import org.hyperledger.fabric.protos.orderer.HashgraphServiceGrpc;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HashgraphFeedImpl extends HashgraphFeedGrpc.HashgraphFeedImplBase {
+public class HashgraphFeedImpl extends HashgraphServiceGrpc.HashgraphServiceImplBase {
 
     private final List<HashgraphFeedHandler> handlers = new ArrayList<>();
 

@@ -22,7 +22,7 @@ message ConsensusResponse {
     bool accepted = 1;
 }
 
-service OrdererFeed {
+service OrdererService {
     rpc Consensus(ConsensusTransaction) returns (ConsensusResponse) {}
 }
 

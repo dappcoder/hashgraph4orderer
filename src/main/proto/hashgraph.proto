@@ -17,7 +17,7 @@ message CreateResponse {
     bool accepted = 1;
 }
 
-service HashgraphFeed {
+service HashgraphService {
     rpc Create(Transaction) returns (CreateResponse) {}
 }
 
