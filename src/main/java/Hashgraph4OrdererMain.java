@@ -5,6 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.time.Instant;
 
@@ -28,7 +29,7 @@ public class Hashgraph4OrdererMain implements SwirldMain, ConsensusHandler {
         int grpcPort = consensusPort + 1000;
         server = new GrpcServer(grpcPort);
 
-        console.out.println("Initialized " + platform.getAddress().getSelfName());
+        getConsole().println("Initialized " + platform.getAddress().getSelfName());
     }
 
     @Override
@@ -69,12 +70,24 @@ public class Hashgraph4OrdererMain implements SwirldMain, ConsensusHandler {
     public void handle(long id, boolean consensus, Instant timestamp, byte[] transaction, Address address) {
         if (console != null) {
             try {
-                console.out.println("CONSENSUS: \n" + new String(transaction, "UTF-8"));
+                getConsole().println("CONSENSUS: \n" + new String(transaction, "UTF-8"));
             } catch (UnsupportedEncodingException e) {
                 LOG.warn(e);
                 throw new RuntimeException(e);
             }
         }
 
+    }
+
+    public PrintStream getConsole() {
+        PrintStream printStream;
+
+        //TODO find a safer check for headless environment
+        if (console != null) {
+            printStream = console.out;
+        } else {
+            printStream = System.out;
+        }
+        return printStream;
     }
 }
